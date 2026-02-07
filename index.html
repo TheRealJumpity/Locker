@@ -14,8 +14,9 @@ body {
   color: #fff;
   font-family: sans-serif;
   flex-direction: column;
-  cursor: none;
+  cursor: default; /* Normal cursor */
 }
+
 #overlay {
   position: fixed;
   inset: 0;
@@ -27,10 +28,12 @@ body {
   font-size: 32px;
   cursor: pointer;
 }
+
 button {
   padding: 12px 24px;
   font-size: 18px;
   margin-top: 20px;
+  cursor: pointer;
 }
 </style>
 </head>
@@ -42,15 +45,6 @@ button {
 
 <script>
 let blocked = true;
-  
-// TP cursor to center every millisecond
-setInterval(() => {
-  if (!blocked) return;
-
-  // Move the mouse pointer to the center
-  const centerX = window.innerWidth / 2;
-  const centerY = window.innerHeight / 2;
-  
 const stopBtn = document.getElementById('stop');
 
 // Fullscreen request
@@ -60,20 +54,19 @@ function fs() {
   }
 }
 
-// 🔒 Fullscreen persistence
+// Fullscreen persistence
 document.addEventListener('fullscreenchange', () => {
   if (blocked && !document.fullscreenElement) {
     fs();
   }
 });
 
-// ⌨️ Block all keys except emergency P
+// Block all keys except emergency P
 document.addEventListener('keydown', e => {
   if (!blocked) return;
 
   if (e.key === 'p' || e.key === 'P') {
     blocked = false;
-    document.body.style.cursor = 'default';
     document.exitFullscreen && document.exitFullscreen();
   } else {
     e.preventDefault();
@@ -81,13 +74,13 @@ document.addEventListener('keydown', e => {
   }
 });
 
-// ▶️ Start trap
+// Start trap
 document.getElementById('overlay').onclick = () => {
   fs();
   document.getElementById('overlay').remove();
 };
 
-// 🏃 STOP button dodges cursor
+// STOP button dodges cursor
 stopBtn.onmouseenter = () => {
   if (!blocked) return;
   stopBtn.style.position = 'absolute';
@@ -95,10 +88,9 @@ stopBtn.onmouseenter = () => {
   stopBtn.style.top = Math.random() * (window.innerHeight - 60) + 'px';
 };
 
-// 🛑 STOP button still works if clicked
+// STOP button works
 stopBtn.onclick = () => {
   blocked = false;
-  document.body.style.cursor = 'default';
   document.exitFullscreen && document.exitFullscreen();
 };
 </script>
