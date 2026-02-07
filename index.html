@@ -31,10 +31,6 @@ button {
   padding: 12px 24px;
   font-size: 18px;
   margin-top: 20px;
-  cursor: pointer;
-}
-button:hover {
-  cursor: pointer;
 }
 </style>
 </head>
@@ -46,46 +42,55 @@ button:hover {
 
 <script>
 let blocked = true;
+const stopBtn = document.getElementById('stop');
 
-// Fullscreen on first click
+// Fullscreen request
 function fs() {
-  let e = document.documentElement;
-  e.requestFullscreen && e.requestFullscreen();
+  if (document.documentElement.requestFullscreen) {
+    document.documentElement.requestFullscreen();
+  }
 }
 
-// Key blocking, only "P" works as emergency stop
+// 🔒 Fullscreen persistence
+document.addEventListener('fullscreenchange', () => {
+  if (blocked && !document.fullscreenElement) {
+    fs();
+  }
+});
+
+// ⌨️ Block all keys except emergency P
 document.addEventListener('keydown', e => {
   if (!blocked) return;
+
   if (e.key === 'p' || e.key === 'P') {
     blocked = false;
     document.body.style.cursor = 'default';
     document.exitFullscreen && document.exitFullscreen();
-    alert('Emergency stop triggered');
   } else {
     e.preventDefault();
+    e.stopPropagation();
   }
 });
 
-// Start fullscreen when overlay clicked
+// ▶️ Start trap
 document.getElementById('overlay').onclick = () => {
   fs();
-  overlay.remove();
+  document.getElementById('overlay').remove();
 };
 
-// Show cursor only on STOP button
-document.getElementById('stop').onmouseenter = () => {
-  document.body.style.cursor = 'pointer';
-};
-document.getElementById('stop').onmouseleave = () => {
-  if (blocked) document.body.style.cursor = 'none';
+// 🏃 STOP button dodges cursor
+stopBtn.onmouseenter = () => {
+  if (!blocked) return;
+  stopBtn.style.position = 'absolute';
+  stopBtn.style.left = Math.random() * (window.innerWidth - 120) + 'px';
+  stopBtn.style.top = Math.random() * (window.innerHeight - 60) + 'px';
 };
 
-// STOP button functionality
-document.getElementById('stop').onclick = () => {
+// 🛑 STOP button still works if clicked
+stopBtn.onclick = () => {
   blocked = false;
   document.body.style.cursor = 'default';
   document.exitFullscreen && document.exitFullscreen();
-  alert('Stopped');
 };
 </script>
 
