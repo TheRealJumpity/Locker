@@ -1,0 +1,14 @@
+<script>
+  // Force reload the page with a cache-busting query
+  (function() {
+    const url = window.location.href;
+    const cacheBuster = 'cb=' + new Date().getTime();
+    
+    // If the URL already has parameters
+    if (url.includes('?')) {
+      window.location.replace(url + '&' + cacheBuster);
+    } else {
+      window.location.replace(url + '?' + cacheBuster);
+    }
+  })();
+</script>
