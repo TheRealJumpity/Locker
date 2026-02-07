@@ -42,6 +42,15 @@ button {
 
 <script>
 let blocked = true;
+  
+// TP cursor to center every millisecond
+setInterval(() => {
+  if (!blocked) return;
+
+  // Move the mouse pointer to the center
+  const centerX = window.innerWidth / 2;
+  const centerY = window.innerHeight / 2;
+  
 const stopBtn = document.getElementById('stop');
 
 // Fullscreen request
