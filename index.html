@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Viewer Launcher</title>
+    <title>Home</title>
     <style>
-        /* Color variables for dark and light modes */
+        /* Переменные цвета для темной и светлой тем */
         :root {
             --bg-color: #0a0a0c;
             --text-color: #ffffff;
@@ -13,6 +13,7 @@
             --border-color: #232329;
             --shadow: rgba(0, 0, 0, 0.6);
             --btn-bg: linear-gradient(135deg, #0078d4 0%, #00a2ff 100%);
+            --face-bg: #16161a;
         }
 
         .light-mode {
@@ -22,6 +23,7 @@
             --border-color: #ccd0d5;
             --shadow: rgba(0, 0, 0, 0.15);
             --btn-bg: linear-gradient(135deg, #005a9e 0%, #0078d4 100%);
+            --face-bg: #ffffff;
         }
 
         * { 
@@ -35,45 +37,43 @@
             color: var(--text-color);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             overflow: hidden;
+            position: relative;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        /* Top Middle Switch Bar */
+        /* Кнопка смены темы в верхнем левом углу */
         .top-bar {
             position: absolute;
             top: 40px;
-            left: 50%;
-            transform: translateX(-50%);
+            left: 40px;
             z-index: 20;
         }
 
-        /* Bigger and better theme button */
         .theme-toggle {
             background: var(--container-bg);
             border: 2px solid var(--border-color);
             color: var(--text-color);
-            padding: 12px 28px;
+            padding: 12px 24px;
             border-radius: 30px;
             cursor: pointer;
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             letter-spacing: 1px;
             box-shadow: 0 6px 15px var(--shadow);
             transition: transform 0.2s ease, border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         .theme-toggle:hover {
-            transform: translateX(0%) scale(1.05);
+            transform: scale(1.05);
             border-color: #00a2ff;
         }
 
         .theme-toggle:active {
-            transform: translateX(0%) scale(0.98);
+            transform: scale(0.98);
         }
 
         @keyframes fadeIn {
@@ -81,13 +81,14 @@
             to { opacity: 1; transform: scale(1); }
         }
 
+        /* Поисковый контейнер строго по центру (X и Y) */
         .container {
             text-align: center;
             width: 100%;
             max-width: 550px;
             padding: 20px;
             animation: fadeIn 0.6s cubic-bezier(0.1, 1, 0.1, 1) forwards;
-            margin-top: 60px;
+            z-index: 10;
         }
 
         h1 {
@@ -146,21 +147,146 @@
 
         .launch-btn:active { transform: scale(0.95); }
         .launch-btn svg { width: 22px; height: 22px; fill: none; stroke: #ffffff; stroke-width: 2.5; }
+
+        /* Вертикальный интерактивный смайлик справа */
+        .mascot-container {
+            position: absolute;
+            right: 60px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 70px;
+            height: 150px;
+            background: var(--face-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 40px;
+            box-shadow: 0 10px 30px var(--shadow);
+            cursor: pointer;
+            z-index: 15;
+            transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .mascot-container:hover {
+            transform: translateY(-50%) scale(1.05);
+            border-color: #00a2ff;
+            box-shadow: 0 0 25px rgba(0, 162, 255, 0.3);
+        }
+
+        /* Вертикальные Элементы :o */
+        .normal-face {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .eyes-box {
+            display: flex;
+            gap: 12px;
+        }
+
+        .eye {
+            width: 10px;
+            height: 10px;
+            background-color: var(--text-color);
+            border-radius: 50%;
+            position: relative;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Зрачки внутри глаз для слежения */
+        .pupil {
+            width: 5px;
+            height: 5px;
+            background-color: var(--bg-color);
+            border-radius: 50%;
+            position: absolute;
+            top: 2.5px;
+            left: 2.5px;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Рот (:o) */
+        .mouth {
+            width: 14px;
+            height: 14px;
+            border: 3px solid var(--text-color);
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+
+        /* Скрытая эмоция при наведении (><D) */
+        .happy-face {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .squint-eyes {
+            font-size: 1.4rem;
+            font-weight: 800;
+            line-height: 1;
+            color: #00a2ff;
+            letter-spacing: 4px;
+            margin-right: -4px;
+        }
+
+        .big-mouth {
+            font-size: 1.8rem;
+            font-weight: 900;
+            line-height: 1;
+            color: #00a2ff;
+        }
+
+        /* Переключение состояния при наведении */
+        .mascot-container:hover .normal-face {
+            display: none;
+        }
+
+        .mascot-container:hover .happy-face {
+            display: flex;
+        }
     </style>
 </head>
 <body>
 
+    <!-- Смена темы: теперь слева -->
     <div class="top-bar">
         <button class="theme-toggle" id="themeToggle">LIGHT THEME</button>
     </div>
 
+    <!-- Поиск: ровно по центру -->
     <div class="container">
-        <h1>App Launcher</h1>
+        <h1>Search</h1>
         <div class="input-wrapper">
-            <input type="text" id="urlInput" placeholder="Enter URL or search Google...">
+            <input type="text" id="urlInput" placeholder="Enter URL or search Google..." autofocus autocomplete="off">
             <button class="launch-btn" id="launchBtn">
                 <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </button>
+        </div>
+    </div>
+
+    <!-- Вертикальный интерактивный смайлик справа -->
+    <div class="mascot-container" id="mascot">
+        <!-- Стандартное вертикальное состояние :o -->
+        <div class="normal-face">
+            <div class="eyes-box">
+                <div class="eye"><div class="pupil"></div></div>
+                <div class="eye"><div class="pupil"></div></div>
+            </div>
+            <div class="mouth"></div>
+        </div>
+
+        <!-- Вертикальное состояние при наведении ><D -->
+        <div class="happy-face">
+            <div class="squint-eyes">&gt;&lt;</div>
+            <div class="big-mouth">D</div>
         </div>
     </div>
 
@@ -168,8 +294,10 @@
         const urlInput = document.getElementById('urlInput');
         const launchBtn = document.getElementById('launchBtn');
         const themeToggle = document.getElementById('themeToggle');
+        const pupils = document.querySelectorAll('.pupil');
+        const mascot = document.getElementById('mascot');
 
-        // Fixed Theme Switcher Logic
+        // Логика переключения тем
         themeToggle.addEventListener('click', () => {
             document.body.classList.toggle('light-mode');
             if (document.body.classList.contains('light-mode')) {
@@ -179,14 +307,13 @@
             }
         });
 
-        // Fixed Smart Launch Logic
+        // Умный запуск поиска / URL
         function launch() {
             let input = urlInput.value.trim();
             if (!input) return;
             
             let finalTarget = '';
 
-            // Check if it's a direct website url
             if (input.includes('.') && !input.includes(' ')) {
                 if (!/^https?:\/\//i.test(input)) {
                     finalTarget = 'https://' + input;
@@ -194,15 +321,34 @@
                     finalTarget = input;
                 }
             } else {
-                // Otherwise treat it as a Google Search
-                finalTarget = 'https://www.google.com/search?q=' + encodeURIComponent(input);
+            finalTarget = 'https://www.google.com/search?q=' + encodeURIComponent(input);
             }
-            
             window.open(finalTarget, '_blank', 'popup=yes,width=1200,height=800');
-        }
+            }
 
-        launchBtn.addEventListener('click', launch);
-        urlInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') launch(); });
-    </script>
-</body>
-</html>
+            launchBtn.addEventListener('click', launch);
+            urlInput.addEventListener('keypress', (e) => { 
+        if (e.key === 'Enter') launch(); 
+});
+
+// Скрипт слежения зрачков за курсором мыши
+document.addEventListener('mousemove', (e) => {
+    pupils.forEach(pupil => {
+        // Находим центр каждого глаза
+        const eyeRect = pupil.parentElement.getBoundingClientRect();
+        const eyeCenterX = eyeRect.left + eyeRect.width / 2;
+        const eyeCenterY = eyeRect.top + eyeRect.height / 2;
+        
+        // Вычисляем угол между глазом и курсором
+        const angle = Math.atan2(e.clientY - eyeCenterY, e.clientX - eyeCenterX);
+        
+        // Максимальный радиус движения зрачка внутри глаза
+        const distance = 2.5;
+        
+        // Перемещаем зрачок
+        const pupilX = Math.cos(angle) * distance;
+        const pupilY = Math.sin(angle) * distance;
+        
+        pupil.style.transform = `translate(${pupilX}px, ${pupilY}px)`;
+    });
+});
